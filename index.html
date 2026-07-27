@@ -796,12 +796,13 @@
                 errorDiv.textContent = 'Invalid exam password.';
                 errorDiv.classList.remove('hidden'); return;
             }
+            const TEST_KEY = 'X7P9Q2'; // reusable key for testing — never locks
             const usedKey = `exam_license_used_${pwd}`;
-            if (localStorage.getItem(usedKey) === 'true') {
+            if (pwd !== TEST_KEY && localStorage.getItem(usedKey) === 'true') {
                 errorDiv.textContent = 'This exam password has already been used on this device.';
                 errorDiv.classList.remove('hidden'); return;
             }
-            localStorage.setItem(usedKey, 'true');
+            if (pwd !== TEST_KEY) localStorage.setItem(usedKey, 'true');
             window.examPassword = pwd;
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('start-screen').classList.remove('hidden');
