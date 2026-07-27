@@ -623,9 +623,17 @@
     </style>
 
     <style>
-      #examiner-widget { margin: 24px auto; min-height: 120px; display:flex; justify-content:center; }
       .examiner-hint { text-align:center; color:#0a4d43; font-weight:600; margin-top:8px; }
       .speaking-done-note { margin-top:22px; }
+      .level-ladder { max-width:540px; margin:18px auto 6px; text-align:left; }
+      .ladder-title { font-size:13px; font-weight:800; color:#0a4d43; text-align:center; margin-bottom:10px; text-transform:uppercase; letter-spacing:.05em; }
+      .ladder-row { display:flex; align-items:center; gap:12px; padding:9px 14px; border-radius:10px; background:#f7fafc; border:1px solid #e2e8f0; margin-bottom:7px; font-size:15px; color:#2d3748; }
+      .ladder-row.active { background:linear-gradient(135deg,#18a999,#0f695c); color:#fff; border-color:#0a4d43; box-shadow:0 8px 20px rgba(15,105,92,.35); }
+      .ladder-cefr { flex:0 0 46px; text-align:center; font-weight:800; background:#0f695c; color:#fff; border-radius:8px; padding:5px 0; }
+      .ladder-row.active .ladder-cefr { background:#fff; color:#0f695c; }
+      .ladder-name { flex:1; font-weight:600; }
+      .ladder-band { flex:0 0 auto; font-size:13px; opacity:.85; }
+      .ladder-you { flex:0 0 auto; font-weight:800; letter-spacing:.04em; }
     </style>
 
 </head>
@@ -706,6 +714,7 @@
                     <h2 class="score-message">Your Placement Test Results</h2>
                     <div class="score-display" id="score-display">0/60</div>
                     <div class="performance-badge" id="performance-badge"></div>
+                    <div class="level-ladder" id="level-ladder"></div>
                     <div class="time-taken" id="time-taken"></div>
                     <div id="save-status"></div>
                     <div class="results-actions">
@@ -758,10 +767,16 @@
             agentId: "agent_7001kygg4k5efy0tj5yes5mfydh9"      // ElevenLabs "Business English Examiner"
         };
 
-        const cefrMap = {
-            'Pre-elementary':'A1','Elementary':'A1','Pre-intermediate':'A2',
-            'Intermediate':'B1','Upper-intermediate':'B2','Advanced':'C1'
-        };
+        // CEFR mapping per the Speaking Criteria file (CEFR Spoken Production descriptors)
+        const LADDER = [
+            { name:'Pre-elementary',     cefr:'A1', band:'0–11'  },
+            { name:'Elementary',         cefr:'A2', band:'12'     },
+            { name:'Pre-intermediate',   cefr:'B1', band:'13–26'  },
+            { name:'Intermediate',       cefr:'B2', band:'27–40'  },
+            { name:'Upper-intermediate', cefr:'C1', band:'41–54'  },
+            { name:'Advanced',           cefr:'C2', band:'55–60'  }
+        ];
+        const cefrMap = LADDER.reduce((m, l) => { m[l.name] = l.cefr; return m; }, {});
 
         const licensePasswords = [
             "X7P9Q2","T9F3L8","J4Y8M1","Q2Z7B5","H8W3N9",
@@ -995,9 +1010,25 @@
             else if (score <= 40) cls = 'level-intermediate';
             else if (score <= 54) cls = 'level-upper-intermediate';
             else cls = 'level-advanced';
-            badge.textContent = `Business Result ${currentLevel} \u00b7 ${currentCefr}`;
+            badge.textContent = `Business Result ${currentLevel} \u00b7 CEFR ${currentCefr}`;
             badge.className = `performance-badge ${cls}`;
+            renderLadder();
             scrollToTopSmooth();
+        }
+
+        function renderLadder() {
+            const host = document.getElementById('level-ladder');
+            if (!host) return;
+            host.innerHTML = '<div class="ladder-title">Level \u2194 CEFR (from the speaking criteria) \u2014 your placement</div>' +
+                LADDER.map(l => {
+                    const active = (l.name === currentLevel);
+                    return `<div class="ladder-row${active ? ' active' : ''}">
+                        <span class="ladder-cefr">${l.cefr}</span>
+                        <span class="ladder-name">${l.name}</span>
+                        <span class="ladder-band">MCQ ${l.band}</span>
+                        ${active ? '<span class="ladder-you">\u25c0 YOU</span>' : ''}
+                    </div>`;
+                }).join('');
         }
 
         let recognition = null, recognizing = false, finalTranscript = '';
