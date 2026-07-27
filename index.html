@@ -722,21 +722,28 @@
                         <p id="speaking-criteria"></p>
                     </div>
 
-                    <div class="speaking-card">
-                        <h3 style="margin-bottom: 16px; color: #1a202c;">Talk to your Business English Examiner</h3>
-                        <p style="margin:0 0 14px;">Click the microphone below to start. Your examiner will greet you and ask you the questions for your level. Speak clearly and answer as fully as you can — there are no trick questions. When the examiner says the assessment is finished, you can close the window.</p>
-                        <div id="examiner-widget"></div>
-                        <p class="examiner-hint">🎙️ Allow microphone access when your browser asks.</p>
-                    </div>
-
                     <div class="speaking-card" style="background:linear-gradient(135deg,#edf2f7 0%,#e2f0f1 100%);">
-                        <h3 style="margin-bottom: 12px; color: #1a202c;">Your Speaking Questions</h3>
+                        <h3 style="margin-bottom: 12px; color: #1a202c;">Answer these questions aloud</h3>
+                        <p style="margin:0 0 12px;">Read each question and answer it out loud, one after another, speaking as fully and naturally as you can. Your voice is recorded and transcribed live, then analysed by AI for your examiner.</p>
                         <div id="speaking-questions"></div>
                     </div>
 
-                    <div class="success-message speaking-done-note">
-                        ✅ Your speaking is analysed automatically and sent to your examiner with your written score. You may now close this window — thank you!
+                    <div class="speaking-card">
+                        <div style="text-align:center;">
+                            <button class="record-btn" id="record-btn" onclick="toggleRecording()">🎙️ Start Recording</button>
+                            <p id="recording-status" style="margin-top:10px;color:#666;font-weight:600;"></p>
+                            <p class="examiner-hint">🎙️ Allow microphone access when your browser asks. Best on Google Chrome or Microsoft Edge.</p>
+                        </div>
+                        <div id="transcription-display" class="hidden">
+                            <h3 style="color:#1a202c;margin:18px 0 10px;">📝 Your answers (live transcription)</h3>
+                            <div id="transcription-text" class="transcription-box">Waiting for speech…</div>
+                        </div>
                     </div>
+
+                    <button class="submit-button" id="submit-speaking-btn" onclick="submitSpeaking()" disabled>
+                        <span>📤 Submit Speaking for Analysis</span>
+                    </button>
+                    <div id="speaking-status"></div>
                 </div>
 
             </div>
@@ -992,36 +999,94 @@
             scrollToTopSmooth();
         }
 
+        let recognition = null, recognizing = false, finalTranscript = '';
+
         function proceedToSpeaking() {
             const sQ = speakingQuestions[currentLevel] || [];
             document.getElementById('speaking-questions').innerHTML = sQ.map((q, i) =>
                 `<div class="speaking-question"><h4>Question ${i + 1}</h4><p>${q}</p></div>`).join('');
-            document.getElementById('speaking-criteria').textContent = speakingCriteria[currentLevel] || '';
+            document.getElementById('speaking-criteria').textContent =
+                'Level: Business Result ' + currentLevel + ' (' + currentCefr + '). ' + (speakingCriteria[currentLevel] || '');
             document.getElementById('results-screen').classList.add('hidden');
             document.getElementById('speaking-screen').classList.remove('hidden');
-            mountExaminer(sQ);
+            finalTranscript = '';
+            const tt = document.getElementById('transcription-text');
+            if (tt) tt.textContent = 'Waiting for speech…';
             scrollToTopSmooth();
         }
 
-        function mountExaminer(sQ) {
-            const host = document.getElementById('examiner-widget');
-            host.innerHTML = '';
-            const el = document.createElement('elevenlabs-convai');
-            el.setAttribute('agent-id', ONLINE.agentId);
-            const dv = {
-                attemptId: currentAttemptId,
-                student_name: studentName,
-                level: 'Business Result ' + currentLevel,
-                cefr: currentCefr,
-                questions: sQ.map((q, i) => (i + 1) + '. ' + q).join('\n')
-            };
-            el.setAttribute('dynamic-variables', JSON.stringify(dv));
-            host.appendChild(el);
-            if (!document.getElementById('convai-script')) {
-                const sc = document.createElement('script');
-                sc.id = 'convai-script'; sc.async = true; sc.type = 'text/javascript';
-                sc.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
-                document.body.appendChild(sc);
+        function toggleRecording() {
+            const btn = document.getElementById('record-btn');
+            const status = document.getElementById('recording-status');
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!recognizing) {
+                if (!SR) { showTypeFallback(); return; }
+                recognition = new SR();
+                recognition.lang = 'en-US'; recognition.continuous = true; recognition.interimResults = true;
+                document.getElementById('transcription-display').classList.remove('hidden');
+                recognition.onresult = (e) => {
+                    let interim = '';
+                    for (let i = e.resultIndex; i < e.results.length; i++) {
+                        const t = e.results[i][0].transcript;
+                        if (e.results[i].isFinal) finalTranscript += t + ' '; else interim += t;
+                    }
+                    document.getElementById('transcription-text').textContent = (finalTranscript + interim).trim() || 'Listening…';
+                    if (finalTranscript.trim().length > 0) document.getElementById('submit-speaking-btn').disabled = false;
+                };
+                recognition.onerror = (e) => {
+                    status.textContent = '⚠️ ' + e.error + ' — you can press Start again, or type your answers.';
+                    status.style.color = '#c0392b';
+                    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') showTypeFallback();
+                };
+                recognition.onend = () => { if (recognizing) { try { recognition.start(); } catch (_) {} } };
+                try { recognition.start(); } catch (_) {}
+                recognizing = true;
+                btn.textContent = '⏹️ Stop Recording'; btn.classList.add('recording');
+                status.textContent = '🔴 Recording… answer each question aloud.'; status.style.color = '#e74c3c';
+            } else {
+                recognizing = false;
+                try { recognition.stop(); } catch (_) {}
+                btn.textContent = '🎙️ Start Recording'; btn.classList.remove('recording');
+                status.textContent = '✅ Recording stopped. Add more or submit.'; status.style.color = '#27ae60';
+                if (finalTranscript.trim().length > 0) document.getElementById('submit-speaking-btn').disabled = false;
+            }
+        }
+
+        function showTypeFallback() {
+            const card = document.getElementById('transcription-display');
+            card.classList.remove('hidden');
+            card.innerHTML = '<h3 style="color:#1a202c;margin:18px 0 10px;">📝 Your answers</h3>' +
+                '<div class="warning-message" style="margin-bottom:10px;">Live voice transcription isn\'t available in this browser. Please use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> for voice — or type your answers below and submit.</div>' +
+                '<textarea id="type-fallback" class="form-input" style="min-height:170px;font-family:inherit;" placeholder="Type your answers to the questions above…" oninput="onTypeFallback()"></textarea>';
+            const rb = document.getElementById('record-btn'); if (rb) rb.style.display = 'none';
+        }
+        function onTypeFallback() {
+            finalTranscript = document.getElementById('type-fallback').value;
+            document.getElementById('submit-speaking-btn').disabled = finalTranscript.trim().length < 2;
+        }
+
+        async function submitSpeaking() {
+            const btn = document.getElementById('submit-speaking-btn');
+            const status = document.getElementById('speaking-status');
+            if (recognizing) { recognizing = false; try { recognition.stop(); } catch (_) {} }
+            const transcript = (finalTranscript || '').trim();
+            if (transcript.length < 2) { status.innerHTML = '<div class="warning-message">Please record or type an answer first.</div>'; return; }
+            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span><span>Analysing…</span>';
+            try {
+                if (ONLINE.base) {
+                    await fetch(ONLINE.base + '/webhook/bus-speaking', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            attemptId: currentAttemptId, student_name: studentName,
+                            level: 'Business Result ' + currentLevel, cefr: currentCefr, transcript: transcript
+                        })
+                    });
+                }
+                status.innerHTML = '<div class="success-message">✅ Your speaking has been submitted and analysed by AI. Your examiner will see your full results (written + speaking). You may now close this window — thank you!</div>';
+                btn.innerHTML = '<span>✅ Submitted</span>';
+            } catch (e) {
+                status.innerHTML = '<div class="error-message">❌ Could not submit. Please check your connection and press Try Again.</div>';
+                btn.disabled = false; btn.innerHTML = '<span>🔄 Try Again</span>';
             }
         }
 
