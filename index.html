@@ -3,21 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Results - Placement Test</title>
-
-    <!-- EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
-    <!-- Azure Speech SDK -->
-    <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
-
-    <script>
-        (function() {
-            emailjs.init("neXjwiQVXsMwW54x4");
-        })();
-    </script>
-
-    <style>
+    <title>Business Result - Business English Placement Test</title>
+<style>
         * { box-sizing: border-box; }
 
         html, body {
@@ -73,9 +60,8 @@
 
         /* BOTH LOGOS: FIXED HEIGHT 100PX, AUTO WIDTH */
         .logo-left, .logo-right {
-            height: 100px;
-            width: auto;
-            max-width: 300px;
+            height: 96px;
+            width: 240px;
             object-fit: contain;
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18));
         }
@@ -624,8 +610,8 @@
                 min-height: 80px;
             }
             .logo-left, .logo-right {
-                height: 80px;
-                max-width: 240px;
+                height: 76px;
+                width: 190px;
             }
             .title {
                 font-size: 32px;
@@ -635,21 +621,28 @@
             }
         }
     </style>
+
+    <style>
+      #examiner-widget { margin: 24px auto; min-height: 120px; display:flex; justify-content:center; }
+      .examiner-hint { text-align:center; color:#0a4d43; font-weight:600; margin-top:8px; }
+      .speaking-done-note { margin-top:22px; }
+    </style>
+
 </head>
 <body>
+
     <div class="container">
         <div class="quiz-card">
             <div class="quiz-inner">
-                <!-- LOGOS - SAME HEIGHT 100PX -->
                 <div class="logo-container">
-                    <img class="logo-left" src="https://raw.githubusercontent.com/Abeerahmedwafa123/Mental-Math-/main/Monglish%20Logo.png" alt="Monglish Logo" onerror="this.style.display='none'">
-                    <img class="logo-right" src="https://raw.githubusercontent.com/Abeerahmedwafa123/Mental-Math-/main/Edu-Logo%20(1).png" alt="Edulixa Logo" onerror="this.style.display='none'">
+                    <img class="logo-left" src="assets/monglish_coloured.png" alt="Monglish Logo" onerror="this.style.display='none'">
+                    <img class="logo-right" src="assets/Edu-Logo%20(1)%20(1).png" alt="Edulixa Logo" onerror="this.style.display='none'">
                 </div>
 
                 <div class="header">
-                    <h1 class="title">Business Results</h1>
+                    <h1 class="title">Business Result</h1>
                     <h2 class="title-sub">Placement Test</h2>
-                    <p class="subtitle">Test Your English Language Skills</p>
+                    <p class="subtitle">Test Your Business English Skills</p>
                 </div>
 
                 <div id="login-screen" class="start-screen">
@@ -663,10 +656,7 @@
                             <label class="form-label" for="login-password">Exam Password</label>
                             <input id="login-password" type="password" class="form-input" required>
                         </div>
-                        <button type="submit" class="start-button">
-                            <span>▶</span>
-                            <span>Unlock Exam</span>
-                        </button>
+                        <button type="submit" class="start-button"><span>▶</span><span>Unlock Exam</span></button>
                     </form>
                     <div id="login-error" class="error-message hidden"></div>
                 </div>
@@ -684,10 +674,7 @@
                             <label for="test-date" class="form-label">Date *</label>
                             <input type="date" id="test-date" class="form-input" required>
                         </div>
-                        <button type="submit" class="start-button">
-                            <span>▶</span>
-                            <span>Start Placement Test</span>
-                        </button>
+                        <button type="submit" class="start-button"><span>▶</span><span>Start Placement Test</span></button>
                     </form>
                 </div>
 
@@ -706,17 +693,13 @@
                                         <span class="progress-text" id="progress-text">Answered: 0 / 60</span>
                                         <span id="progress-percent">0%</span>
                                     </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" id="progress-fill"></div>
-                                    </div>
+                                    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <form id="quiz-form"></form>
-                    <button class="submit-button" id="submit-button" onclick="submitQuiz(event)">
-                        <span>Submit Quiz</span>
-                    </button>
+                    <button class="submit-button" id="submit-button" onclick="submitQuiz(event)"><span>Submit Quiz</span></button>
                 </div>
 
                 <div id="results-screen" class="hidden results-screen">
@@ -726,12 +709,8 @@
                     <div class="time-taken" id="time-taken"></div>
                     <div id="save-status"></div>
                     <div class="results-actions">
-                        <button type="button" class="start-button" onclick="proceedToSpeaking()">
-                            <span>🎤 Continue to Speaking Test</span>
-                        </button>
-                        <button type="button" class="secondary-button" onclick="scrollToTopSmooth()">
-                            ↑ Back to top
-                        </button>
+                        <button type="button" class="start-button" onclick="proceedToSpeaking()"><span>🎤 Continue to Speaking Test</span></button>
+                        <button type="button" class="secondary-button" onclick="scrollToTopSmooth()">↑ Back to top</button>
                     </div>
                 </div>
 
@@ -744,48 +723,38 @@
                     </div>
 
                     <div class="speaking-card">
-                        <h3 style="margin-bottom: 20px; color: #1a202c;">Your Speaking Questions</h3>
+                        <h3 style="margin-bottom: 16px; color: #1a202c;">Talk to your Business English Examiner</h3>
+                        <p style="margin:0 0 14px;">Click the microphone below to start. Your examiner will greet you and ask you the questions for your level. Speak clearly and answer as fully as you can — there are no trick questions. When the examiner says the assessment is finished, you can close the window.</p>
+                        <div id="examiner-widget"></div>
+                        <p class="examiner-hint">🎙️ Allow microphone access when your browser asks.</p>
+                    </div>
+
+                    <div class="speaking-card" style="background:linear-gradient(135deg,#edf2f7 0%,#e2f0f1 100%);">
+                        <h3 style="margin-bottom: 12px; color: #1a202c;">Your Speaking Questions</h3>
                         <div id="speaking-questions"></div>
-                        <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.7); border-radius: 10px;">
-                            <strong>🎙️ Instructions:</strong>
-                            <p style="margin: 10px 0;">Click "Start Recording" and answer each question clearly. Your pronunciation, fluency, and accuracy will be analyzed.</p>
-                        </div>
                     </div>
 
-                    <div style="text-align: center; margin: 30px 0;">
-                        <button class="record-btn" id="record-btn" onclick="toggleAIRecording()">
-                            🎙️ Start Recording
-                        </button>
-                        <p id="recording-status" style="margin-top: 10px; color: #666; font-weight: 600;"></p>
+                    <div class="success-message speaking-done-note">
+                        ✅ Your speaking is analysed automatically and sent to your examiner with your written score. You may now close this window — thank you!
                     </div>
-
-                    <div id="transcription-display" class="hidden">
-                        <h3 style="color: #1a202c; margin: 20px 0 15px;">📝 Live Transcription</h3>
-                        <div id="transcription-text" class="transcription-box">Waiting for speech...</div>
-                    </div>
-
-                    <div class="analysis-section" id="analysis-section" style="display: none;">
-                        <h3 style="color: #1a202c; margin-bottom: 15px;">📊 Analysis Results</h3>
-                        <div id="analysis-content"></div>
-                    </div>
-
-                    <button class="submit-button" onclick="submitSpeakingTest()" id="submit-speaking-btn" disabled>
-                        <span>📧 Submit Complete Assessment</span>
-                    </button>
-
-                    <div id="speaking-status"></div>
                 </div>
 
             </div>
         </div>
     </div>
 
+
     <script>
-        const EMAILJS_SERVICE_ID = "service_ku3fqsf";
-        const EMAILJS_TEMPLATE_ID = "template_0httu8r";
-        const TARGET_EMAIL = "examinersedulixa@outlook.com";
-        const AZURE_SPEECH_KEY = "AkynUbcLLna5rphwZ0xO5i68uLxeEzgwFGYVlJY08CO7IIZ3y6BfJQQJ99BKAC5RqLJXJ3w3AAAYACOG1tCk";
-        const AZURE_REGION = "westeurope";
+        /* ====== Business English Placement Test — Edulixa / Monglish ====== */
+        const ONLINE = {
+            base: "https://monglish.app.n8n.cloud",           // n8n cloud
+            agentId: "agent_7001kygg4k5efy0tj5yes5mfydh9"      // ElevenLabs "Business English Examiner"
+        };
+
+        const cefrMap = {
+            'Pre-elementary':'A1','Elementary':'A1','Pre-intermediate':'A2',
+            'Intermediate':'B1','Upper-intermediate':'B2','Advanced':'C1'
+        };
 
         const licensePasswords = [
             "X7P9Q2","T9F3L8","J4Y8M1","Q2Z7B5","H8W3N9",
@@ -815,24 +784,16 @@
             const passwordInput = document.getElementById('login-password');
             const errorDiv = document.getElementById('login-error');
             const pwd = passwordInput.value.trim();
-
-            errorDiv.classList.add('hidden');
-            errorDiv.textContent = '';
-
+            errorDiv.classList.add('hidden'); errorDiv.textContent = '';
             if (!licensePasswords.includes(pwd)) {
                 errorDiv.textContent = 'Invalid exam password.';
-                errorDiv.classList.remove('hidden');
-                return;
+                errorDiv.classList.remove('hidden'); return;
             }
-
             const usedKey = `exam_license_used_${pwd}`;
-
             if (localStorage.getItem(usedKey) === 'true') {
                 errorDiv.textContent = 'This exam password has already been used on this device.';
-                errorDiv.classList.remove('hidden');
-                return;
+                errorDiv.classList.remove('hidden'); return;
             }
-
             localStorage.setItem(usedKey, 'true');
             window.examPassword = pwd;
             document.getElementById('login-screen').classList.add('hidden');
@@ -921,31 +882,28 @@
             { question: "It's difficult to ___ what the reaction might be to this proposal.", options: ["weigh", "gauge", "measure"], correct: 1 }
         ];
 
-        let startTime, timerInterval, userAnswers = [], studentName = '', testDate = '', currentScore = 0, currentLevel = '';
-        let recognizer = null, fullTranscription = '', azureAnalysisResults = null;
+        let startTime, timerInterval, userAnswers = [], studentName = '', testDate = '';
+        let currentScore = 0, currentLevel = '', currentCefr = '', currentAttemptId = '';
 
         function startQuiz(event) {
             event.preventDefault();
             studentName = document.getElementById('student-name').value.trim();
             testDate = document.getElementById('test-date').value;
             if (!studentName || !testDate) return;
+            currentAttemptId = 'BE-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
             document.getElementById('header-student-name').textContent = studentName;
             document.getElementById('header-test-date').textContent = testDate;
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('quiz-screen').classList.remove('hidden');
-            renderQuestions();
-            updateProgress();
-            startTimer();
-            scrollToTopSmooth();
+            renderQuestions(); updateProgress(); startTimer(); scrollToTopSmooth();
         }
 
         function renderQuestions() {
-            const form = document.getElementById('quiz-form');
-            form.innerHTML = '';
+            const form = document.getElementById('quiz-form'); form.innerHTML = '';
             questions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question-container';
-                questionDiv.innerHTML = `
+                const div = document.createElement('div');
+                div.className = 'question-container';
+                div.innerHTML = `
                     <div class="question-number">Question ${index + 1} of ${questions.length}</div>
                     <div class="question-text">${q.question}</div>
                     <div class="options">
@@ -953,11 +911,9 @@
                             <label class="option">
                                 <input type="radio" name="question${index}" value="${i}" onchange="updateProgress()">
                                 <span>${String.fromCharCode(65 + i)}. ${opt}</span>
-                            </label>
-                        `).join('')}
-                    </div>
-                `;
-                form.appendChild(questionDiv);
+                            </label>`).join('')}
+                    </div>`;
+                form.appendChild(div);
             });
         }
 
@@ -965,266 +921,117 @@
             startTime = Date.now();
             timerInterval = setInterval(() => {
                 const elapsed = Math.floor((Date.now() - startTime) / 1000);
-                const minutes = Math.floor(elapsed / 60);
-                const seconds = elapsed % 60;
-                document.getElementById('timer').textContent = `Time: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                const m = Math.floor(elapsed / 60), s = elapsed % 60;
+                document.getElementById('timer').textContent = `Time: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
             }, 1000);
         }
 
         function updateProgress() {
-            let answeredCount = 0;
-            questions.forEach((_, index) => {
-                if (document.querySelector(`input[name="question${index}"]:checked`)) answeredCount++;
-            });
-            const total = questions.length;
-            const percent = Math.round((answeredCount / total) * 100);
-            document.getElementById('progress-text').textContent = `Answered: ${answeredCount} / ${total}`;
-            document.getElementById('progress-percent').textContent = `${percent}%`;
-            document.getElementById('progress-fill').style.width = `${percent}%`;
+            let answered = 0;
+            questions.forEach((_, i) => { if (document.querySelector(`input[name="question${i}"]:checked`)) answered++; });
+            const total = questions.length, pct = Math.round((answered / total) * 100);
+            document.getElementById('progress-text').textContent = `Answered: ${answered} / ${total}`;
+            document.getElementById('progress-percent').textContent = `${pct}%`;
+            document.getElementById('progress-fill').style.width = `${pct}%`;
         }
 
         async function submitQuiz(event) {
             event.preventDefault();
-            const submitButton = document.getElementById('submit-button');
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner"></span><span>Submitting...</span>';
+            const btn = document.getElementById('submit-button');
+            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span><span>Submitting...</span>';
             clearInterval(timerInterval);
-
-            let score = 0, answeredCount = 0;
-            userAnswers = [];
-            questions.forEach((q, index) => {
-                const selected = document.querySelector(`input[name="question${index}"]:checked`);
-                const answer = selected ? parseInt(selected.value, 10) : -1;
-                userAnswers.push(answer);
-                if (selected) {
-                    answeredCount++;
-                    if (answer === q.correct) score++;
-                }
+            let score = 0, answered = 0; userAnswers = [];
+            questions.forEach((q, i) => {
+                const sel = document.querySelector(`input[name="question${i}"]:checked`);
+                const a = sel ? parseInt(sel.value, 10) : -1; userAnswers.push(a);
+                if (sel) { answered++; if (a === q.correct) score++; }
             });
-
             currentScore = score;
             const elapsed = Math.floor((Date.now() - startTime) / 1000);
-            const minutes = Math.floor(elapsed / 60);
-            const seconds = elapsed % 60;
-            const timeTaken = `${minutes}:${String(seconds).padStart(2, '0')}`;
-
             if (score <= 11) currentLevel = 'Pre-elementary';
             else if (score === 12) currentLevel = 'Elementary';
             else if (score >= 13 && score <= 26) currentLevel = 'Pre-intermediate';
             else if (score >= 27 && score <= 40) currentLevel = 'Intermediate';
             else if (score >= 41 && score <= 54) currentLevel = 'Upper-intermediate';
             else currentLevel = 'Advanced';
-
+            currentCefr = cefrMap[currentLevel] || '';
             try {
-                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                    to_email: TARGET_EMAIL, student_name: studentName, test_date: testDate,
-                    exam_password: window.examPassword || 'N/A', score: score, level: currentLevel,
-                    time_taken: timeTaken, answered_count: answeredCount,
-                    speaking_questions: 'Awaiting speaking test', criteria: speakingCriteria[currentLevel],
-                    total_recordings: 0, timestamp: new Date().toLocaleString()
-                });
-                document.getElementById('save-status').innerHTML = '<div class="success-message">✅ Results sent to ' + TARGET_EMAIL + '!</div>';
-            } catch (error) {
-                document.getElementById('save-status').innerHTML = '<div class="warning-message">⚠️ Error sending email.</div>';
+                if (ONLINE.base) {
+                    await fetch(ONLINE.base + '/webhook/bus-result', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            attemptId: currentAttemptId, student: studentName, testDate: testDate,
+                            mcqScore: score, level: 'Business Result ' + currentLevel, cefr: currentCefr
+                        })
+                    });
+                    document.getElementById('save-status').innerHTML = '<div class="success-message">\u2705 Your written test has been recorded. Please continue to the speaking assessment.</div>';
+                }
+            } catch (e) {
+                document.getElementById('save-status').innerHTML = '<div class="warning-message">\u26A0\uFE0F Could not reach the server. Please tell your examiner \u2014 your written score is ' + score + '/60.</div>';
             }
-
-            showResults(score, answeredCount, elapsed);
-            submitButton.disabled = false;
-            submitButton.innerHTML = '<span>Submit Quiz</span>';
+            showResults(score, answered, elapsed);
+            btn.disabled = false; btn.innerHTML = '<span>Submit Quiz</span>';
         }
 
-        function showResults(score, answeredCount, elapsed) {
-            const minutes = Math.floor(elapsed / 60);
-            const seconds = elapsed % 60;
+        function showResults(score, answered, elapsed) {
+            const m = Math.floor(elapsed / 60), s = elapsed % 60;
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('results-screen').classList.remove('hidden');
             document.getElementById('score-display').textContent = `${score}/60`;
-            document.getElementById('time-taken').textContent = `${studentName}\n${testDate}\n${minutes}:${String(seconds).padStart(2, '0')}\nAnswered: ${answeredCount}/60`;
-
+            document.getElementById('time-taken').textContent =
+                `${studentName}\n${testDate}\nTime: ${m}:${String(s).padStart(2,'0')}\nAnswered: ${answered}/60`;
             const badge = document.getElementById('performance-badge');
-            let badgeClass;
-            if (score <= 12) badgeClass = 'level-elementary';
-            else if (score >= 13 && score <= 26) badgeClass = 'level-pre-intermediate';
-            else if (score >= 27 && score <= 40) badgeClass = 'level-intermediate';
-            else if (score >= 41 && score <= 54) badgeClass = 'level-upper-intermediate';
-            else badgeClass = 'level-advanced';
-
-            badge.textContent = `Exam Result: ${currentLevel}`;
-            badge.className = `performance-badge ${badgeClass}`;
+            let cls;
+            if (score <= 12) cls = 'level-elementary';
+            else if (score <= 26) cls = 'level-pre-intermediate';
+            else if (score <= 40) cls = 'level-intermediate';
+            else if (score <= 54) cls = 'level-upper-intermediate';
+            else cls = 'level-advanced';
+            badge.textContent = `Business Result ${currentLevel} \u00b7 ${currentCefr}`;
+            badge.className = `performance-badge ${cls}`;
             scrollToTopSmooth();
         }
 
         function proceedToSpeaking() {
-            const questions = speakingQuestions[currentLevel];
-            const container = document.getElementById('speaking-questions');
-            container.innerHTML = questions.map((q, i) => `
-                <div class="speaking-question">
-                    <h4>Question ${i + 1}</h4>
-                    <p>${q}</p>
-                </div>
-            `).join('');
-            document.getElementById('speaking-criteria').textContent = speakingCriteria[currentLevel];
+            const sQ = speakingQuestions[currentLevel] || [];
+            document.getElementById('speaking-questions').innerHTML = sQ.map((q, i) =>
+                `<div class="speaking-question"><h4>Question ${i + 1}</h4><p>${q}</p></div>`).join('');
+            document.getElementById('speaking-criteria').textContent = speakingCriteria[currentLevel] || '';
             document.getElementById('results-screen').classList.add('hidden');
             document.getElementById('speaking-screen').classList.remove('hidden');
+            mountExaminer(sQ);
             scrollToTopSmooth();
         }
 
-        async function toggleAIRecording() {
-            const recordBtn = document.getElementById('record-btn');
-            const statusText = document.getElementById('recording-status');
-
-            if (typeof SpeechSDK === 'undefined') {
-                statusText.textContent = '❌ Speech SDK not loaded. Please refresh.';
-                statusText.style.color = '#e74c3c';
-                return;
-            }
-
-            if (!recognizer) {
-                try {
-                    const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(AZURE_SPEECH_KEY, AZURE_REGION);
-                    speechConfig.speechRecognitionLanguage = 'en-US';
-                    const pronunciationConfig = new SpeechSDK.PronunciationAssessmentConfig("", SpeechSDK.PronunciationAssessmentGradingSystem.HundredMark, SpeechSDK.PronunciationAssessmentGranularity.Phoneme, true);
-                    const audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
-                    recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
-                    pronunciationConfig.applyTo(recognizer);
-
-                    fullTranscription = '';
-                    azureAnalysisResults = { pronunciationScores: [], accuracyScores: [], fluencyScores: [], completenessScores: [] };
-                    document.getElementById('transcription-display').classList.remove('hidden');
-                    document.getElementById('transcription-text').textContent = 'Listening...';
-
-                    recognizer.recognizing = (s, e) => {
-                        if (e.result.reason === SpeechSDK.ResultReason.RecognizingSpeech) {
-                            document.getElementById('transcription-text').textContent = fullTranscription + '\n[Recognizing...] ' + e.result.text;
-                        }
-                    };
-
-                    recognizer.recognized = (s, e) => {
-                        if (e.result.reason === SpeechSDK.ResultReason.RecognizedSpeech) {
-                            fullTranscription += e.result.text + ' ';
-                            document.getElementById('transcription-text').textContent = fullTranscription;
-                            const pronunciationResult = SpeechSDK.PronunciationAssessmentResult.fromResult(e.result);
-                            if (pronunciationResult) {
-                                azureAnalysisResults.pronunciationScores.push(pronunciationResult.pronunciationScore || 0);
-                                azureAnalysisResults.accuracyScores.push(pronunciationResult.accuracyScore || 0);
-                                azureAnalysisResults.fluencyScores.push(pronunciationResult.fluencyScore || 0);
-                                azureAnalysisResults.completenessScores.push(pronunciationResult.completenessScore || 0);
-                            }
-                        }
-                    };
-
-                    recognizer.startContinuousRecognitionAsync(() => {
-                        recordBtn.textContent = '⏹️ Stop & Analyze';
-                        recordBtn.classList.add('recording');
-                        statusText.textContent = '🔴 Recording...';
-                        statusText.style.color = '#e74c3c';
-                    }, (err) => {
-                        statusText.textContent = '❌ Error: ' + err;
-                        statusText.style.color = '#e74c3c';
-                    });
-                } catch (error) {
-                    statusText.textContent = '❌ Error: ' + error.message;
-                    statusText.style.color = '#e74c3c';
-                }
-            } else {
-                recordBtn.disabled = true;
-                recordBtn.classList.remove('recording');
-                recordBtn.classList.add('analyzing');
-                recordBtn.textContent = '🤖 Analyzing...';
-                statusText.textContent = '🤖 Analyzing...';
-                statusText.style.color = '#667eea';
-
-                recognizer.stopContinuousRecognitionAsync(() => {
-                    displayAIAnalysis();
-                    recognizer.close();
-                    recognizer = null;
-                    recordBtn.disabled = false;
-                    recordBtn.classList.remove('analyzing');
-                    recordBtn.textContent = '✅ Complete';
-                    statusText.textContent = '✅ Analysis complete!';
-                    statusText.style.color = '#27ae60';
-                    document.getElementById('submit-speaking-btn').disabled = false;
-                }, (err) => {
-                    statusText.textContent = '❌ Error stopping';
-                    recordBtn.disabled = false;
-                });
-            }
-        }
-
-        function displayAIAnalysis() {
-            const analysisSection = document.getElementById('analysis-section');
-            const analysisContent = document.getElementById('analysis-content');
-            analysisSection.style.display = 'block';
-
-            if (!azureAnalysisResults || azureAnalysisResults.pronunciationScores.length === 0) {
-                analysisContent.innerHTML = '<div class="warning-message">⚠️ No analysis data. Transcription: ' + (fullTranscription || 'None') + '</div>';
-                return;
-            }
-
-            const avg = (arr) => Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
-            const avgPronunciation = avg(azureAnalysisResults.pronunciationScores);
-            const avgAccuracy = avg(azureAnalysisResults.accuracyScores);
-            const avgFluency = avg(azureAnalysisResults.fluencyScores);
-            const avgCompleteness = avg(azureAnalysisResults.completenessScores);
-            const overallScore = Math.round((avgPronunciation + avgAccuracy + avgFluency + avgCompleteness) / 4);
-            const getScoreClass = (score) => score >= 90 ? 'score-excellent' : score >= 75 ? 'score-good' : score >= 60 ? 'score-fair' : 'score-needs-improvement';
-
-            analysisContent.innerHTML = `
-                <div class="analysis-item" style="text-align:center;padding:20px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border-radius:10px;">
-                    <h3 style="margin:0 0 10px 0;color:white;">Overall Score</h3>
-                    <div style="font-size:48px;font-weight:800;">${overallScore}/100</div>
-                </div>
-                <div class="analysis-item"><strong>🗣️ Pronunciation:</strong> <span class="score-badge ${getScoreClass(avgPronunciation)}">${avgPronunciation}/100</span></div>
-                <div class="analysis-item"><strong>🎯 Accuracy:</strong> <span class="score-badge ${getScoreClass(avgAccuracy)}">${avgAccuracy}/100</span></div>
-                <div class="analysis-item"><strong>💬 Fluency:</strong> <span class="score-badge ${getScoreClass(avgFluency)}">${avgFluency}/100</span></div>
-                <div class="analysis-item"><strong>✅ Completeness:</strong> <span class="score-badge ${getScoreClass(avgCompleteness)}">${avgCompleteness}/100</span></div>
-                <div class="analysis-item"><strong>📝 Words:</strong> ${fullTranscription.split(' ').filter(w => w.length > 0).length}</div>
-                <div class="analysis-item"><strong>🎯 Level:</strong> ${currentLevel}</div>
-            `;
-        }
-
-        async function submitSpeakingTest() {
-            const submitBtn = document.getElementById('submit-speaking-btn');
-            const statusDiv = document.getElementById('speaking-status');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner"></span><span>Submitting...</span>';
-
-            try {
-                let aiScores = 'No analysis';
-                if (azureAnalysisResults && azureAnalysisResults.pronunciationScores.length > 0) {
-                    const avg = (arr) => Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
-                    const p = avg(azureAnalysisResults.pronunciationScores);
-                    const a = avg(azureAnalysisResults.accuracyScores);
-                    const f = avg(azureAnalysisResults.fluencyScores);
-                    const c = avg(azureAnalysisResults.completenessScores);
-                    const o = Math.round((p + a + f + c) / 4);
-                    aiScores = `Overall: ${o}/100\nPronunciation: ${p}/100\nAccuracy: ${a}/100\nFluency: ${f}/100\nCompleteness: ${c}/100\n\nTranscription:\n${fullTranscription}`;
-                }
-
-                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                    to_email: TARGET_EMAIL, student_name: studentName, test_date: testDate,
-                    exam_password: window.examPassword || 'N/A', score: currentScore, level: currentLevel,
-                    time_taken: 'See placement test', answered_count: 60,
-                    speaking_questions: speakingQuestions[currentLevel].join('\n'),
-                    criteria: speakingCriteria[currentLevel] + '\n\n' + aiScores,
-                    total_recordings: 1, timestamp: new Date().toLocaleString()
-                });
-
-                statusDiv.innerHTML = '<div class="success-message">✅ Complete assessment submitted to ' + TARGET_EMAIL + '</div>';
-                submitBtn.innerHTML = '<span>✅ Submitted</span>';
-            } catch (error) {
-                statusDiv.innerHTML = '<div class="error-message">❌ Error submitting</div>';
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span>🔄 Try Again</span>';
+        function mountExaminer(sQ) {
+            const host = document.getElementById('examiner-widget');
+            host.innerHTML = '';
+            const el = document.createElement('elevenlabs-convai');
+            el.setAttribute('agent-id', ONLINE.agentId);
+            const dv = {
+                attemptId: currentAttemptId,
+                student_name: studentName,
+                level: 'Business Result ' + currentLevel,
+                cefr: currentCefr,
+                questions: sQ.map((q, i) => (i + 1) + '. ' + q).join('\n')
+            };
+            el.setAttribute('dynamic-variables', JSON.stringify(dv));
+            host.appendChild(el);
+            if (!document.getElementById('convai-script')) {
+                const sc = document.createElement('script');
+                sc.id = 'convai-script'; sc.async = true; sc.type = 'text/javascript';
+                sc.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
+                document.body.appendChild(sc);
             }
         }
 
         function scrollToTopSmooth() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const dateInput = document.getElementById('test-date');
-            if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+            const d = document.getElementById('test-date');
+            if (d) d.value = new Date().toISOString().split('T')[0];
         });
     </script>
+
 </body>
 </html>
